@@ -17,8 +17,10 @@ mysqld  Ver 5.7.19 for Linux on x86_64 (MySQL Community Server (GPL))
 ```
 
 ##### setup
-`# mysql_secure_installation`
-
+```
+cat /var/log/mysqld.log | grep root
+# mysql_secure_installation
+```
 
 ##### phpMyAdmin install
 ```
