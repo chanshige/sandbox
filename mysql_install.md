@@ -16,6 +16,13 @@ https://dev.mysql.com/downloads/repo/yum/
 mysqld  Ver 5.7.19 for Linux on x86_64 (MySQL Community Server (GPL)) 
 ```
 
+##### start
+```
+# systemctl start mysqld.service
+# systemctl enable mysqld.service
+# systemctl status mysqld
+```
+
 ##### setup
 ```
 cat /var/log/mysqld.log | grep root
