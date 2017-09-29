@@ -1,0 +1,11 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Test\\": "test/"
+    }
+  },
+  "require": {
+    "phpunit/phpunit": "~5.2",
+    "facebook/webdriver": "^1.4"
+  }
+}
