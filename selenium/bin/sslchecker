@@ -6,6 +6,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use Facebook\WebDriver\Remote;
+use Facebook\WebDriver\Chrome\ChromeOptions;
 
 if (!isset($argv[1]) && !(bool)filter_var($argv[1], FILTER_VALIDATE_URL)) {
     throw new \Exception('Please input a sitemap url');
@@ -16,11 +17,16 @@ if (!$xmlObject) {
     throw new \Exception('Error: Failed to load xml file.');
 }
 
-$host = 'http://localhost:4444/wd/hub';
+$options = (new ChromeOptions())->addArguments(array('--headless'));
 $capabilities = Remote\DesiredCapabilities::chrome();
+$capabilities->setCapability(ChromeOptions::CAPABILITY, $options);
 
 /** @var Remote\RemoteWebDriver $driver */
-$driver = Remote\RemoteWebDriver::create($host, $capabilities, 5000);
+$driver = Remote\RemoteWebDriver::create(
+    'http://localhost:4444/wd/hub',
+    $capabilities,
+    5000
+);
 
 // Basic認証用
 if (isset($argv[2]) && (bool)filter_var($argv[2], FILTER_VALIDATE_BOOLEAN)) {
