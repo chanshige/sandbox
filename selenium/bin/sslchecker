@@ -34,6 +34,7 @@ if (isset($argv[2]) && (bool)filter_var($argv[2], FILTER_VALIDATE_BOOLEAN)) {
 }
 
 echo "[SSL CHECK START]: --------------------------" . PHP_EOL;
+$total = 0;
 foreach ($xmlObject as $item) {
     $driver->get($item->loc);
 
@@ -44,15 +45,15 @@ foreach ($xmlObject as $item) {
             'message')
     );
 
-    echo "[URL] " . $item->loc . ' [SSL] ';
-    echo (bool)$mixedContent ? 'NG' : 'OK';
-    echo PHP_EOL;
+    echo "[URL] " . $item->loc . " [SSL] " . ((bool)$mixedContent ? 'NG' : 'OK') . PHP_EOL;
     // Error
     if (count($mixedContent) > 0) {
         echo '[ERROR DETAIL] ' . var_export($mixedContent, true) . PHP_EOL;
     }
+    $total++;
 }
 
 /** Quits this driver */
 $driver->quit();
+echo "[TOTAL]: {$total}" . PHP_EOL;
 echo "[SSL CHECK END]: --------------------------" . PHP_EOL;
