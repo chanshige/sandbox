@@ -20,3 +20,36 @@ https://sites.google.com/a/chromium.org/chromedriver/downloadsunzip \
 
 - 実行 \
 `composer test` なり `php public/example.php` 
+
+
+
+### Linux
+
+```bash
+$ wget https://chromedriver.storage.googleapis.com/2.29/chromedriver_linux64.zip
+$ unzip chromedriver_linux64.zip
+$ sudo mv chromedriver /usr/local/bin/
+```
+`$ sudo yum install -y libX11 GConf2 fontconfig`
+
+```bash
+/etc/yum.repos.d/google-chrome.repo
+
+[google-chrome]
+name=google-chrome
+baseurl=http://dl.google.com/linux/chrome/rpm/stable/$basearch
+enabled=1
+gpgcheck=1
+gpgkey=https://dl-ssl.google.com/linux/linux_signing_key.pub
+```
+
+`sudo yum install -y google-chrome-stable libOSMesa google-noto-cjk-fonts`
+
+
+```bash
+sudo yum install java-1.8.0-openjdk-devel
+java -version
+
+wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.0.jar
+nohup java -jar selenium-server-standalone-2.53.0.jar &
+```
