@@ -1,11 +1,11 @@
 package main
 
 import (
-"fmt"
-"flag"
-"os"
-"path/filepath"
-"bytes"
+	"bytes"
+	"flag"
+	"fmt"
+	"os"
+	"path/filepath"
 )
 
 func main() {
@@ -16,7 +16,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	filepath.Walk(flag.Arg(0), walkFunc)
+	err = filepath.Walk(flag.Arg(0), walkFunc)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
 
 func validate(args []string) error {
@@ -33,7 +37,6 @@ func validate(args []string) error {
 }
 
 func walkFunc(path string, info os.FileInfo, err error) error {
-	// ディレクトリパスは不要
 	if info.IsDir() {
 		return nil
 	}
