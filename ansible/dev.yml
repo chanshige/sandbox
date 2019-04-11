@@ -1,0 +1,91 @@
+- hosts: vagrants
+  become: yes
+  become_user: root
+  user: vagrant
+  tasks:
+    - name: Install libselinux-python
+      yum:
+        name: libselinux-python
+        state: present
+
+    - name: SELinux desable
+      selinux: state=disabled
+
+    - name: Overwrite timezone.
+      copy:
+        src: /usr/share/zoneinfo/Asia/Tokyo
+        dest: /etc/localtime
+        force: yes
+
+    - name: Install epel repogitory
+      yum:
+        name: epel-release
+        state: present
+
+    - name: Install a list of packages
+      yum:
+        name:
+          - openssl-devel
+          - readline-devel
+          - zlib-devel
+          - libxml2-devel
+          - bzip2-devel
+          - curl-devel
+          - libjpeg-devel
+          - libpng-devel
+          - libicu-devel
+          - gcc-c++
+          - libtidy-devel
+          - libxslt-devel
+          - autoconf
+          - bison-devel
+          - libmcrypt-devel
+          - perl-ExtUtils-MakeMaker
+          - wget
+          - unzip
+        state: present
+
+    - name: exists git command
+      shell: type git
+      register: exists_git_command
+      ignore_errors: true
+      changed_when: false
+
+    - name: download of git 2.9.5
+      get_url:
+        url: https://www.kernel.org/pub/software/scm/git/git-2.9.5.tar.gz
+        dest: /tmp
+        force: no
+      when: exists_git_command is failed
+
+    - name: unzip for git
+      unarchive:
+        src: /tmp/git-2.9.5.tar.gz
+        dest: /tmp
+        copy: no
+      when: exists_git_command is failed
+
+    - name: Install of git 2.9.5
+      shell: "{{ item }}"
+      args:
+        chdir: /tmp/git-2.9.5
+        with_items:
+          - 'make configure'
+          - './configure --prefix=/usr'
+          - 'make all'
+          - 'make install'
+      when: exists_git_command is failed
+
+    - name: Git clone Of phpenv
+      git:
+        repo=https://github.com/CHH/phpenv.git
+        dest=/home/vagrant/phpenv
+
+    - name: Build phpenv
+      shell: /home/vagrant/phpenv/bin/phpenv-install.sh
+
+    - name: Copy phpenv.
+      copy:
+        src: /home/vagrant/.phpenv
+        dest: /usr/local/rbenv
+        force: yes
